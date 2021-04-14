@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
 
+        // Update Fragment Layout
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit(); // Start Home when app first launches
     }
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
+            // Update Fragment Layout
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, selectedFragment).commit();
 
             return true;
