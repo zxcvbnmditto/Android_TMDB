@@ -17,8 +17,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class HomeFragment extends Fragment {
@@ -27,29 +32,43 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        this.setHomeText(view);
+        return view;
+    }
+
+    private void setHomeText(View view) {
         final TextView textView = (TextView) view.findViewById(R.id.home_text);
 
-        // Instantiate the RequestQueue.
-        String url ="http://10.0.2.2:8080/Test";
+        String url ="http://10.0.2.2:8080/TrendingMovies";
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    textView.setText("Response is: "+ response);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    textView.setText("That didn't work!");
-                }
-        });
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject obj = response.getJSONObject(i);
+
+                                String id = obj.getString("id");
+                                String title = obj.getString("title");
+
+                                textView.append(id + " " + title + "\n\n");
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        textView.setText("That didn't work!");
+                    }
+                });
 
         // Add the request to the RequestQueue.
-        MySingleton.getInstance(this.getActivity().getApplicationContext()).addToRequestQueue(stringRequest);
-        return view;
+        MySingleton.getInstance(this.getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 }
