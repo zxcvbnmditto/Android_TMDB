@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">USC_Film</string>
+    <string name="home_btn">Home</string>
+    <string name="search_btn">Search</string>
+    <string name="watchlist_btn">Watchlist</string>
+    <string name="app_icon_btn">USC Films</string>
+    <string name="movies_btn">Movies</string>
+    <string name="tv_btn">TV Shows</string>
+    <string name="btn_size">20sp</string>
+</resources>
