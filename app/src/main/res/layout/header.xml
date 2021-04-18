@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
+    android:id="@+id/top_navbar"
     android:layout_alignParentTop="true"
+    android:layout_marginTop="10dp"
     android:weightSum="5"
     android:orientation="horizontal"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorBackground">
 
     <Button
         android:id="@+id/USC_Films_btn"
@@ -13,14 +15,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:background="@android:color/transparent"
-        android:drawableStart="@drawable/ic_outline_home_24"
-        android:paddingStart="20sp"
+        android:drawableStart="@drawable/ic_theaters_white_24dp"
+        android:paddingStart="20dp"
         android:text="@string/app_icon_btn"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:textAlignment="textStart"
         android:textSize="20sp" />
-
 
     <Button
         android:id="@+id/movies_btn"
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/movies_btn"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:background="@android:color/transparent"/>
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/tv_btn"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:background="@android:color/transparent"/>
