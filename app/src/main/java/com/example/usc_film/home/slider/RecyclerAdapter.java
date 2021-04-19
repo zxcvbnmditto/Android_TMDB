@@ -1,5 +1,6 @@
 package com.example.usc_film.home.slider;
 
+import android.content.Intent;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.usc_film.DetailActivity;
 import com.example.usc_film.R;
 
 import java.util.ArrayList;
@@ -42,11 +44,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MediaData media_data = data.get(position);
+        final MediaData media_data = data.get(position);
         Glide.with(holder.itemView)
                 .load(media_data.getImgUrl())
                 .centerCrop()
                 .into(holder.image);
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("id", media_data.getId());
+                intent.putExtra("title", media_data.getTitle());
+                view.getContext().startActivity(intent);
+                // System.out.println("clicked");
+                // System.out.println(media_data.getTitle());
+            }
+        });
     }
 
     @Override
