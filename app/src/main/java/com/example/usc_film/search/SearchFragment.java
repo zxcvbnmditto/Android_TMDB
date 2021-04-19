@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
     private RecyclerView searchContentView;
+    private TextView searchNoReseultFoundView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class SearchFragment extends Fragment {
         searchView.setFocusable(true);
         searchView.setIconified(false);
         searchContentView = view.findViewById(R.id.search_content);
-
+        searchNoReseultFoundView = view.findViewById(R.id.search_no_result_found);
 //        searchView.requestFocusFromTouch();
 //        searchView.clearFocus();
 
@@ -55,8 +57,13 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String url = "http://10.0.2.2:8080/Search?query=" + newText;
-                search(url);
+                if (newText.length() > 0) {
+                    String url = "http://10.0.2.2:8080/Search?query=" + newText;
+                    search(url);
+                }
+                else {
+                    searchContentView.setVisibility(View.INVISIBLE);
+                }
                 return false;
             }
         });
@@ -65,7 +72,6 @@ public class SearchFragment extends Fragment {
     }
 
     private void search(String url) {
-        System.out.println("Search" + url);
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -88,6 +94,16 @@ public class SearchFragment extends Fragment {
                             }
 
                             setSearchAdapter(searchDataArrayList);
+
+                            if (response.length() > 0) {
+                                searchContentView.setVisibility(View.VISIBLE);
+                                searchNoReseultFoundView.setVisibility(View.INVISIBLE);
+                            }
+                            else {
+                                searchContentView.setVisibility(View.INVISIBLE);
+                                searchNoReseultFoundView.setVisibility(View.VISIBLE);
+                            }
+
                         }
                         catch (JSONException e) {
                             e.printStackTrace();

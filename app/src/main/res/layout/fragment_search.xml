@@ -29,5 +29,15 @@
         android:layout_marginEnd="10dp"
         android:scrollbars="vertical"/>
 
+    <TextView
+        android:id="@+id/search_no_result_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:text="No result found."
+        android:textColor="@color/colorSecondary"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
