@@ -24,12 +24,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
-        private TextView titleText;
         private ImageView image;
 
         public MyViewHolder(final View view) {
             super(view);
-//            titleText = view.findViewById(R.id.recycler_textview);
             image = view.findViewById(R.id.recycler_imageview);
             this.itemView = view;
         }
@@ -45,8 +43,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MediaData media_data = data.get(position);
-//        holder.titleText.setText(media_data.getTitle());
-
         Glide.with(holder.itemView)
                 .load(media_data.getImgUrl())
                 .centerCrop()

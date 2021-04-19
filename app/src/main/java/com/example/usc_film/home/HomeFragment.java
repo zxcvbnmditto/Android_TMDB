@@ -39,6 +39,8 @@ public class HomeFragment extends Fragment {
     private static boolean isMovie = true;
     private SliderView carouselView;
     private RecyclerView topRatedView;
+    private RecyclerView popularView;
+
 
     @Nullable
     @Override
@@ -46,6 +48,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         carouselView = view.findViewById(R.id.carousel_slider);
         topRatedView = view.findViewById(R.id.top_rated);
+        popularView = view.findViewById(R.id.popular);
         loadData(view);
 
         // Button Listeners
@@ -104,25 +107,25 @@ public class HomeFragment extends Fragment {
         carouselView.startAutoCycle();
     }
 
-    private void setRecyclerAdapter(ArrayList<MediaData> mediaDataArrayList) {
+    private void setRecyclerAdapter(RecyclerView view, ArrayList<MediaData> mediaDataArrayList) {
         RecyclerAdapter adapter = new RecyclerAdapter(mediaDataArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),
                                                                             LinearLayoutManager.HORIZONTAL, false);
-        topRatedView.setLayoutManager(layoutManager);
-        topRatedView.setItemAnimator(new DefaultItemAnimator());
-        topRatedView.setAdapter(adapter);
+        view.setLayoutManager(layoutManager);
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setAdapter(adapter);
     }
 
     private void loadData(View view) {
         System.out.println("Load Data");
-        getCarousel(view);
+        getCarousel();
         String topRatedUrl = (isMovie) ? "http://10.0.2.2:8080/TopRatedMovies" : "http://10.0.2.2:8080/TopRatedTvs";
         String popularUrl = (isMovie) ? "http://10.0.2.2:8080/PopularMovies" : "http://10.0.2.2:8080/PopularTvs";
-        getTopRatedAndPopular(topRatedUrl);
-//        getTopRatedAndPopular(view, popularUrl);
+        getTopRatedAndPopular(topRatedView, topRatedUrl);
+        getTopRatedAndPopular(popularView, popularUrl);
     }
 
-    private void getTopRatedAndPopular(String url) {
+    private void getTopRatedAndPopular(final RecyclerView view, String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -136,11 +139,13 @@ public class HomeFragment extends Fragment {
                                 String id = obj.getString("id");
                                 String title = obj.getString("title");
                                 String path = obj.getString("path");
+                                System.out.println(title);
+                                System.out.println(path);
 
                                 mediaDataArrayList.add(new MediaData(id, title, path));
                             }
 
-                            setRecyclerAdapter(mediaDataArrayList);
+                            setRecyclerAdapter(view, mediaDataArrayList);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -156,11 +161,8 @@ public class HomeFragment extends Fragment {
         MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 
-    private void getCarousel(final View view) {
-//        final ImageView imageView = (ImageView) view.findViewById(R.id.test_img);
-
+    private void getCarousel() {
         String url = (isMovie) ? "http://10.0.2.2:8080/NowPlayingMovie" : "http://10.0.2.2:8080/NowPlayingTv";
-
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
