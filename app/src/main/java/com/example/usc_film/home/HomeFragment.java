@@ -37,12 +37,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 enum Type {
-    CAROUSEL,
-    TOP_RATED,
-    POPULAR
+    MV_CAROUSEL(0),
+    MV_TOP_RATED(1),
+    MV_POPULAR(2),
+    TV_CAROUSEL(3),
+    TV_TOP_RATED(4),
+    TV_POPULAR(5);
+    private final int value;
+    private Type(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
 
 public class HomeFragment extends Fragment {
@@ -50,13 +62,9 @@ public class HomeFragment extends Fragment {
     private static boolean isMovie = true;
     private ProgressBar progressBar;
     private TextView loadingView;
-    private ScrollView scrollView;
-    private SliderView carouselView;
-    private RecyclerView topRatedView;
-    private RecyclerView popularView;
-    private Boolean loadCarousel;
-    private Boolean loadTopRated;
-    private Boolean loadPopular;
+    private ScrollView mvScrollView;
+    private ScrollView tvScrollView;
+    private Boolean[] loaded = new Boolean[6];
 
     @Nullable
     @Override
@@ -64,14 +72,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         progressBar = view.findViewById(R.id.home_progressBar);
         loadingView = view.findViewById(R.id.home_loading_view);
-        scrollView = view.findViewById(R.id.home_scrollview);
-        carouselView = view.findViewById(R.id.carousel_slider);
-        topRatedView = view.findViewById(R.id.top_rated);
-        popularView = view.findViewById(R.id.popular);
-        loadCarousel = false;
-        loadTopRated = false;
-        loadPopular = false;
-        loadData(view);
+        mvScrollView = view.findViewById(R.id.home_mv_scrollview);
+        tvScrollView = view.findViewById(R.id.home_tv_scrollview);
+        Arrays.fill(loaded, false);
+        loadData();
 
         // Button Listeners
         final Button mv_btn = view.findViewById(R.id.movies_btn);
@@ -80,7 +84,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if (!isMovie) {
                     isMovie = !isMovie;
-                    getFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
+                    setMainContentVisibility();
                 }
             }
         });
@@ -91,7 +95,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if (isMovie) {
                     isMovie = !isMovie;
-                    getFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
+                    setMainContentVisibility();
                 }
             }
         });
@@ -110,9 +114,14 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void setSlider(ArrayList<SliderData> sliderDataArrayList) {
+    private void setCarousel(Type type, ArrayList<SliderData> sliderDataArrayList) {
         // initializing the slider view.
 //        SliderView sliderView = view.findViewById(R.id.carousel_slider);
+        SliderView carouselView;
+        if (type == Type.MV_CAROUSEL)
+            carouselView = mvScrollView.findViewById(R.id.carousel_slider);
+        else
+            carouselView = tvScrollView.findViewById(R.id.carousel_slider);
         carouselView.stopAutoCycle();
 
         // passing this array list inside our adapter class.
@@ -138,25 +147,45 @@ public class HomeFragment extends Fragment {
         carouselView.startAutoCycle();
     }
 
-    private void setRecyclerAdapter(RecyclerView view, ArrayList<MediaData> mediaDataArrayList) {
+    private void setRecyclerAdapter(Type type, ArrayList<MediaData> mediaDataArrayList) {
         RecyclerAdapter adapter = new RecyclerAdapter(mediaDataArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),
                                                                             LinearLayoutManager.HORIZONTAL, false);
+
+        RecyclerView view;
+        switch (type) {
+            case MV_TOP_RATED:
+                view = mvScrollView.findViewById(R.id.top_rated);
+                break;
+            case MV_POPULAR:
+                view = mvScrollView.findViewById(R.id.popular);
+                break;
+            case TV_TOP_RATED:
+                view = tvScrollView.findViewById(R.id.top_rated);
+                break;
+            case TV_POPULAR:
+                view = tvScrollView.findViewById(R.id.popular);
+                break;
+            default:
+                view = mvScrollView.findViewById(R.id.top_rated);
+                break;
+        }
+
         view.setLayoutManager(layoutManager);
         view.setItemAnimator(new DefaultItemAnimator());
         view.setAdapter(adapter);
     }
 
-    private void loadData(View view) {
-        System.out.println("Load Data");
-        getCarousel(Type.CAROUSEL);
-        String topRatedUrl = (isMovie) ? "http://10.0.2.2:8080/TopRatedMovies" : "http://10.0.2.2:8080/TopRatedTvs";
-        String popularUrl = (isMovie) ? "http://10.0.2.2:8080/PopularMovies" : "http://10.0.2.2:8080/PopularTvs";
-        getTopRatedAndPopular(topRatedView, Type.TOP_RATED, topRatedUrl);
-        getTopRatedAndPopular(popularView, Type.POPULAR, popularUrl);
+    private void loadData() {
+        getCarousel("http://10.0.2.2:8080/NowPlayingMovie", Type.MV_CAROUSEL);
+        getCarousel("http://10.0.2.2:8080/NowPlayingTv", Type.TV_CAROUSEL);
+        getSlider("http://10.0.2.2:8080/TopRatedMovies", Type.MV_TOP_RATED);
+        getSlider("http://10.0.2.2:8080/PopularMovies", Type.MV_POPULAR);
+        getSlider("http://10.0.2.2:8080/TopRatedTvs", Type.TV_TOP_RATED);
+        getSlider("http://10.0.2.2:8080/PopularTvs", Type.TV_POPULAR);
     }
 
-    private void getTopRatedAndPopular(final RecyclerView view, final Type type, String url) {
+    private void getSlider(String url, final Type type) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -176,9 +205,8 @@ public class HomeFragment extends Fragment {
 
                                 mediaDataArrayList.add(new MediaData(id, title, path, type));
                             }
-
-                            setRecyclerAdapter(view, mediaDataArrayList);
-                            changeVisibility(type);
+                            setRecyclerAdapter(type, mediaDataArrayList);
+                            changeLoadingVisibility(type);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -194,8 +222,7 @@ public class HomeFragment extends Fragment {
         MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 
-    private void getCarousel(final Type type) {
-        String url = (isMovie) ? "http://10.0.2.2:8080/NowPlayingMovie" : "http://10.0.2.2:8080/NowPlayingTv";
+    private void getCarousel(String url, final Type type) {
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -206,15 +233,11 @@ public class HomeFragment extends Fragment {
 
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject obj = response.getJSONObject(i);
-
-                                String id = obj.getString("id");
-                                String title = obj.getString("title");
                                 String path = obj.getString("path");
-
                                 sliderDataArrayList.add(new SliderData(path));
                             }
-                            setSlider(sliderDataArrayList);
-                            changeVisibility(type);
+                            setCarousel(type, sliderDataArrayList);
+                            changeLoadingVisibility(type);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -231,25 +254,23 @@ public class HomeFragment extends Fragment {
         MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 
-    private void changeVisibility(Type type) {
-        switch (type) {
-            case CAROUSEL:
-                loadCarousel = true;
-                break;
-            case POPULAR:
-                loadPopular = true;
-                break;
-            case TOP_RATED:
-                loadTopRated = true;
-                break;
-            default:
-                break;
-        }
+    private void changeLoadingVisibility(Type type) {
+        loaded[type.getValue()] = true;
 
-        if (loadCarousel && loadTopRated && loadPopular) {
+        if (!Arrays.asList(loaded).contains(false)) {
             progressBar.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
-            scrollView.setVisibility(View.VISIBLE);
+            setMainContentVisibility();
+        }
+    }
+
+    private void setMainContentVisibility() {
+        if (isMovie) {
+            mvScrollView.setVisibility(View.VISIBLE);
+            tvScrollView.setVisibility(View.INVISIBLE);
+        } else {
+            mvScrollView.setVisibility(View.INVISIBLE);
+            tvScrollView.setVisibility(View.VISIBLE);
         }
     }
 }

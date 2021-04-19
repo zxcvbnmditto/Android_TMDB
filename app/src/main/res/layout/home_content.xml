@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/carousel_slider"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:sliderAnimationDuration="600"
+        app:sliderAutoCycleDirection="back_and_forth"
+        app:sliderIndicatorAnimationDuration="600"
+        app:sliderIndicatorEnabled="true"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorPadding="3dp"
+        app:sliderIndicatorRadius="1dp"
+        app:sliderIndicatorSelectedColor="@color/colorPrimary"
+        app:sliderIndicatorUnselectedColor="@color/colorSecondary"
+        app:sliderScrollTimeInSec="1" >
+    </com.smarteist.autoimageslider.SliderView>
+
+    <TextView
+        android:id="@+id/top_rated_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:text="Top-Rated"
+        android:textSize="30dp"
+        android:textColor="@color/colorSecondary"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/top_rated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:scrollbars="horizontal"/>
+
+    <TextView
+        android:id="@+id/popular_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:text="Popular"
+        android:textSize="30dp"
+        android:textColor="@color/colorSecondary"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:scrollbars="horizontal"/>
+
+    <TextView
+        android:id="@+id/footer_tmdb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Powered by TMDB"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12dp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Devopled by Chu-Hung"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12dp"
+        android:textAlignment="center"/>
+</LinearLayout>
