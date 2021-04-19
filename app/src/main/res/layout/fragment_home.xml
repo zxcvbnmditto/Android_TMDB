@@ -72,6 +72,23 @@
                 android:layout_marginStart="20dp"
                 android:scrollbars="horizontal"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Powered by TMDB"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12dp"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Devopled by Chu-Hung"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12dp"
+                android:textAlignment="center"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
