@@ -1,5 +1,7 @@
 package com.example.usc_film.home;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +93,15 @@ public class HomeFragment extends Fragment {
                     isMovie = !isMovie;
                     getFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
                 }
+            }
+        });
+
+        view.findViewById(R.id.footer_tmdb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://www.themoviedb.org/";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                view.getContext().startActivity(browserIntent);
             }
         });
 
