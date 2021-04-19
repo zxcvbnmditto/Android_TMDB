@@ -4,11 +4,13 @@ public class MediaData {
     private String id;
     private String title;
     private String imgUrl;
+    private String type;
 
-    public MediaData(String id, String title, String url) {
+    public MediaData(String id, String title, String url, String type) {
         this.id = id;
         this.title = title;
         this.imgUrl = url;
+        this.type = type;
     }
 
     public String getId() {
@@ -33,5 +35,13 @@ public class MediaData {
 
     public void setImgUrl(String url) {
         this.imgUrl = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

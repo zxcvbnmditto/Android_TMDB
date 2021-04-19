@@ -159,10 +159,11 @@ public class HomeFragment extends Fragment {
                                 String id = obj.getString("id");
                                 String title = obj.getString("title");
                                 String path = obj.getString("path");
+                                String type = obj.getString("type");
                                 System.out.println(title);
                                 System.out.println(path);
 
-                                mediaDataArrayList.add(new MediaData(id, title, path));
+                                mediaDataArrayList.add(new MediaData(id, title, path, type));
                             }
 
                             setRecyclerAdapter(view, mediaDataArrayList);
