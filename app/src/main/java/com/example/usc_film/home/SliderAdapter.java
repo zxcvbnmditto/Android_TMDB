@@ -1,4 +1,4 @@
-package com.example.usc_film.home.slider;
+package com.example.usc_film.home;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -20,10 +20,10 @@ import com.example.usc_film.R;
 
 import java.util.ArrayList;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
+public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHolder>{
     private ArrayList<MediaData> data;
 
-    public RecyclerAdapter(ArrayList<MediaData> data) {
+    public SliderAdapter(ArrayList<MediaData> data) {
         this.data = data;
     }
 

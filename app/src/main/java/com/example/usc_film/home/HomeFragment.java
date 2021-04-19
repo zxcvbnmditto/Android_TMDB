@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.usc_film.MySingleton;
 import com.example.usc_film.R;
-import com.example.usc_film.home.carousel.SliderAdapter;
-import com.example.usc_film.home.carousel.SliderData;
-import com.example.usc_film.home.slider.MediaData;
-import com.example.usc_film.home.slider.RecyclerAdapter;
 import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
@@ -114,9 +109,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void setCarousel(Type type, ArrayList<SliderData> sliderDataArrayList) {
+    private void setCarouselAdapter(Type type, ArrayList<MediaData> sliderDataArrayList) {
         // initializing the slider view.
-//        SliderView sliderView = view.findViewById(R.id.carousel_slider);
         SliderView carouselView;
         if (type == Type.MV_CAROUSEL)
             carouselView = mvScrollView.findViewById(R.id.carousel_slider);
@@ -125,7 +119,7 @@ public class HomeFragment extends Fragment {
         carouselView.stopAutoCycle();
 
         // passing this array list inside our adapter class.
-        SliderAdapter adapter = new SliderAdapter(getActivity().getApplicationContext(), sliderDataArrayList);
+        CarouselAdapter adapter = new CarouselAdapter(getActivity().getApplicationContext(), sliderDataArrayList);
 
         // below method is used to set auto cycle direction in left to
         // right direction you can change according to requirement.
@@ -147,8 +141,8 @@ public class HomeFragment extends Fragment {
         carouselView.startAutoCycle();
     }
 
-    private void setRecyclerAdapter(Type type, ArrayList<MediaData> mediaDataArrayList) {
-        RecyclerAdapter adapter = new RecyclerAdapter(mediaDataArrayList);
+    private void setSliderAdapter(Type type, ArrayList<MediaData> mediaDataArrayList) {
+        SliderAdapter adapter = new SliderAdapter(mediaDataArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),
                                                                             LinearLayoutManager.HORIZONTAL, false);
 
@@ -177,15 +171,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadData() {
-        getCarousel("http://10.0.2.2:8080/NowPlayingMovie", Type.MV_CAROUSEL);
-        getCarousel("http://10.0.2.2:8080/NowPlayingTv", Type.TV_CAROUSEL);
-        getSlider("http://10.0.2.2:8080/TopRatedMovies", Type.MV_TOP_RATED);
-        getSlider("http://10.0.2.2:8080/PopularMovies", Type.MV_POPULAR);
-        getSlider("http://10.0.2.2:8080/TopRatedTvs", Type.TV_TOP_RATED);
-        getSlider("http://10.0.2.2:8080/PopularTvs", Type.TV_POPULAR);
+        getDataFromBackend("http://10.0.2.2:8080/NowPlayingMovie", Type.MV_CAROUSEL);
+        getDataFromBackend("http://10.0.2.2:8080/NowPlayingTv", Type.TV_CAROUSEL);
+        getDataFromBackend("http://10.0.2.2:8080/TopRatedMovies", Type.MV_TOP_RATED);
+        getDataFromBackend("http://10.0.2.2:8080/PopularMovies", Type.MV_POPULAR);
+        getDataFromBackend("http://10.0.2.2:8080/TopRatedTvs", Type.TV_TOP_RATED);
+        getDataFromBackend("http://10.0.2.2:8080/PopularTvs", Type.TV_POPULAR);
     }
 
-    private void getSlider(String url, final Type type) {
+    private void getDataFromBackend(String url, final Type type) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -200,12 +194,13 @@ public class HomeFragment extends Fragment {
                                 String title = obj.getString("title");
                                 String path = obj.getString("path");
                                 String type = obj.getString("type");
-                                System.out.println(title);
-                                System.out.println(path);
 
                                 mediaDataArrayList.add(new MediaData(id, title, path, type));
                             }
-                            setRecyclerAdapter(type, mediaDataArrayList);
+                            if (type == Type.TV_CAROUSEL || type == Type.MV_CAROUSEL)
+                                setCarouselAdapter(type, mediaDataArrayList);
+                            else
+                                setSliderAdapter(type, mediaDataArrayList);
                             changeLoadingVisibility(type);
                         }
                         catch (JSONException e) {
@@ -219,38 +214,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
-    }
-
-    private void getCarousel(String url, final Type type) {
-        // Request a string response from the provided URL.
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
-
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject obj = response.getJSONObject(i);
-                                String path = obj.getString("path");
-                                sliderDataArrayList.add(new SliderData(path));
-                            }
-                            setCarousel(type, sliderDataArrayList);
-                            changeLoadingVisibility(type);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-
-        // Add the request to the RequestQueue.
         MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 

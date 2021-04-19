@@ -1,12 +1,14 @@
-package com.example.usc_film.home.carousel;
+package com.example.usc_film.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.usc_film.DetailActivity;
 import com.example.usc_film.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
@@ -15,13 +17,13 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder> {
+public class CarouselAdapter extends SliderViewAdapter<CarouselAdapter.SliderAdapterViewHolder> {
 
     // list for storing urls of images.
-    private final List<SliderData> mSliderItems;
+    private final List<MediaData> mSliderItems;
 
     // Constructor
-    public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList) {
+    public CarouselAdapter(Context context, ArrayList<MediaData> sliderDataArrayList) {
         this.mSliderItems = sliderDataArrayList;
     }
 
@@ -38,7 +40,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterViewHolder viewHolder, final int position) {
 
-        final SliderData sliderItem = mSliderItems.get(position);
+        final MediaData sliderItem = mSliderItems.get(position);
         // Glide is use to load image
         Glide.with(viewHolder.itemView)
                 .load(sliderItem.getImgUrl())
@@ -49,6 +51,16 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 .load(sliderItem.getImgUrl())
                 .transform(new BlurTransformation(10, 2))
                 .into(viewHolder.imageViewBlurred);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("id", sliderItem.getId());
+                intent.putExtra("title", sliderItem.getTitle());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     // this method will return

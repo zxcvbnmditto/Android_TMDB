@@ -6,10 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.usc_film.R;
-import com.example.usc_film.home.carousel.SliderAdapter;
-import com.example.usc_film.home.carousel.SliderData;
-import com.smarteist.autoimageslider.SliderView;
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

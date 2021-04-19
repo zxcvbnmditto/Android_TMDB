@@ -1,4 +1,4 @@
-package com.example.usc_film.home.slider;
+package com.example.usc_film.home;
 
 public class MediaData {
     private String id;
