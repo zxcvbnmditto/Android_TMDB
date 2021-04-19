@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Toolbar
+        android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,12 +16,18 @@
             app:queryHint="Search movies and TV"
             android:queryHint="Search movies and TV"
             app:defaultQueryHint="Search movies and TV"
-            android:iconifiedByDefault="false"
-            app:iconifiedByDefault="false"
             android:theme="@style/MySearchViewTheme">
         </androidx.appcompat.widget.SearchView>
     </Toolbar>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_toolbar"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:scrollbars="vertical"/>
 
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.example.usc_film.home.slider;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.usc_film.DetailActivity;
-import com.example.usc_film.MainActivity;
 import com.example.usc_film.R;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         public MyViewHolder(final View view) {
             super(view);
-            image = view.findViewById(R.id.recycler_imageview);
+            image = view.findViewById(R.id.recycler_home_image);
             popup = view.findViewById(R.id.recycler_popup);
             this.itemView = view;
         }
@@ -63,8 +61,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 intent.putExtra("id", media_data.getId());
                 intent.putExtra("title", media_data.getTitle());
                 view.getContext().startActivity(intent);
-                // System.out.println("clicked");
-                // System.out.println(media_data.getTitle());
             }
         });
 
