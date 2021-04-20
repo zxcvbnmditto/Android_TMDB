@@ -61,7 +61,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             calendar.setTime(date);
 
             headerText += calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US);
-            headerText += ", " + calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+            headerText += ", " + calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US);
             headerText += " " + review.getDate().substring(8, 10);
             headerText += " " + review.getDate().substring(0, 4);
         } catch (ParseException e) {
