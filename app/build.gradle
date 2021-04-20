@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.23'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.borjabravo:readmoretextview:2.1.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

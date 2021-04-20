@@ -10,6 +10,5 @@
         android:id="@+id/share_twitter_btn"
         android:title="Share on Twitter" />
     <item
-        android:id="@+id/add_to_watchlist_btn"
-        android:title="Add to Watchlist" />
+        android:id="@+id/add_remove_to_watchlist_btn" />
 </menu>
