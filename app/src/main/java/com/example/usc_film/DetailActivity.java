@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,13 +39,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+enum Type {
+    VIDEO(0),
+    DETAIL(1),
+    CAST(2),
+    REVIEW(3),
+    RECOMMEND(4);
+    private final int value;
+    private Type(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
 
 public class DetailActivity extends AppCompatActivity {
     private String id;
     private String type;
     private DetailData detailData;
+    private Boolean[] loaded = new Boolean[5];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +87,15 @@ public class DetailActivity extends AppCompatActivity {
         setShareBtns();
     }
 
+    private void setVisibility(Type type) {
+        loaded[type.getValue()] = true;
+        if (!Arrays.asList(loaded).contains(false)) {
+            findViewById(R.id.detail_progressBar).setVisibility(View.INVISIBLE);
+            findViewById(R.id.detail_loading_view).setVisibility(View.INVISIBLE);
+            findViewById(R.id.detail_scroll).setVisibility(View.VISIBLE);
+        }
+    }
+
     private void getRecommendData(String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -87,6 +115,7 @@ public class DetailActivity extends AppCompatActivity {
                                 mediaDataArrayList.add(new MediaData(id, title, path, type));
                             }
                             setSliderAdapter(mediaDataArrayList);
+                            setVisibility(Type.RECOMMEND);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -125,6 +154,7 @@ public class DetailActivity extends AppCompatActivity {
 
                             detailData.setReviews(reviewArrayList);
                             setReviewView();
+                            setVisibility(Type.REVIEW);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -158,6 +188,7 @@ public class DetailActivity extends AppCompatActivity {
 
                             detailData.setCasts(castArrayList);
                             setCastView();
+                            setVisibility(Type.CAST);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -185,6 +216,7 @@ public class DetailActivity extends AppCompatActivity {
                             detailData.setBackdrop_path(response.getString("path"));
                             detailData.setYear(response.getString("date"));
                             setDetailView();
+                            setVisibility(Type.DETAIL);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -206,6 +238,7 @@ public class DetailActivity extends AppCompatActivity {
                         try {
                             detailData.setVideo_key(response.getString("key"));
                             setYTPlayer();
+                            setVisibility(Type.VIDEO);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();

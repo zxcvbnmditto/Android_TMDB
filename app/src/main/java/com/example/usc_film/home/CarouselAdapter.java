@@ -49,7 +49,7 @@ public class CarouselAdapter extends SliderViewAdapter<CarouselAdapter.SliderAda
 
         Glide.with(viewHolder.itemView)
                 .load(sliderItem.getImgUrl())
-                .transform(new BlurTransformation(10, 2))
+                .transform(new BlurTransformation(10, 5))
                 .into(viewHolder.imageViewBlurred);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
