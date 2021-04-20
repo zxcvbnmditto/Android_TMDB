@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">USC_Film</string>
+    <string name="app_name">USC Films</string>
     <string name="home_btn">Home</string>
     <string name="search_btn">Search</string>
     <string name="watchlist_btn">Watchlist</string>
