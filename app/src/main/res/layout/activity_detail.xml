@@ -50,14 +50,19 @@
                 android:textSize="20dp"
                 android:textFontWeight="700" />
 
-            <TextView
+            <com.borjabravo.readmoretextview.ReadMoreTextView
                 android:id="@+id/detail_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:textColor="@color/colorSecondary"
                 android:textSize="15dp"
-                android:textFontWeight="700" />
+                android:textColor="@color/colorSecondary"
+                app:trimCollapsedText="show less"
+                app:trimExpandedText="show more"
+                app:trimMode="trimModeLength"
+                app:trimLength="200"
+                app:showTrimExpandedText="true"
+                app:colorClickableText="@color/colorPrimary"/>
 
             <TextView
                 android:id="@+id/detail_genres_title"
