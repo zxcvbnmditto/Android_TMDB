@@ -1,5 +1,6 @@
 package com.example.usc_film.detail;
 
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.usc_film.R;
+import com.example.usc_film.ReviewActivity;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Review review = reviews.get(position);
+        final Review review = reviews.get(position);
 
         String headerText = "by " + review.getName() + " on ";
         // 2017-11-11T15:09:34.114Z
@@ -66,9 +68,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             e.printStackTrace();
         }
         holder.headView.setText(headerText);
-        String ratingText = review.getRating() + "/5";
+        final String ratingText = review.getRating() + "/5";
         holder.ratingView.setText(ratingText);
         holder.contextView.setText(review.getContext());
+
+        final String finalHeaderText = headerText;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ReviewActivity.class);
+                intent.putExtra("rating", ratingText);
+                intent.putExtra("header", finalHeaderText);
+                intent.putExtra("context", review.getContext());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
