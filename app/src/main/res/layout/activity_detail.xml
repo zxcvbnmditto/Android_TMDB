@@ -62,7 +62,7 @@
                 app:trimMode="trimModeLength"
                 app:trimLength="170"
                 app:showTrimExpandedText="true"
-                app:colorClickableText="@color/colorPrimary"/>
+                app:colorClickableText="@color/colorReadMore"/>
 
             <TextView
                 android:id="@+id/detail_genres_title"
