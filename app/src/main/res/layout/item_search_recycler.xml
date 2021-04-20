@@ -14,8 +14,7 @@
         android:id="@+id/recycler_search_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="@drawable/gradient"
-        android:visibility="invisible"/>
+        android:foreground="@drawable/gradient"/>
 
     <TextView
         android:id="@+id/recycler_search_title"
