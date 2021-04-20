@@ -60,7 +60,7 @@
                 app:trimCollapsedText="show less"
                 app:trimExpandedText="show more"
                 app:trimMode="trimModeLength"
-                app:trimLength="200"
+                app:trimLength="170"
                 app:showTrimExpandedText="true"
                 app:colorClickableText="@color/colorPrimary"/>
 
