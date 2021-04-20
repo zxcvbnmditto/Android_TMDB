@@ -7,13 +7,15 @@
     android:layout_width="match_parent"
     android:layout_marginRight="15dp"
     android:layout_marginBottom="10dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/colorBackground">
 
     <ImageView
         android:id="@+id/recycler_search_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="@drawable/gradient" />
+        android:foreground="@drawable/gradient"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/recycler_search_title"

@@ -57,7 +57,7 @@ public class CarouselAdapter extends SliderViewAdapter<CarouselAdapter.SliderAda
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("id", sliderItem.getId());
-                intent.putExtra("title", sliderItem.getTitle());
+                intent.putExtra("type", sliderItem.getType());
                 view.getContext().startActivity(intent);
             }
         });

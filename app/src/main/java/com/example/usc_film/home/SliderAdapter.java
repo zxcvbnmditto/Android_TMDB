@@ -59,7 +59,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("id", media_data.getId());
-                intent.putExtra("title", media_data.getTitle());
+                intent.putExtra("type", media_data.getType());
                 view.getContext().startActivity(intent);
             }
         });
