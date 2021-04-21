@@ -55,11 +55,8 @@ public class WatchlistFragment extends Fragment {
 
         if (sharedPref.contains("order")) {
             String order_raw = sharedPref.getString("order", "");
-//            System.out.println(order_raw);
             String[] order = order_raw.split("\\|");
             for (int i = 1; i < order.length; i++) {
-//                System.out.println("###############################");
-//                System.out.println(order[i]);
                 String[] parts = order[i].split("-");
                 String id = parts[0];
                 String media_type = parts[1];
@@ -77,7 +74,6 @@ public class WatchlistFragment extends Fragment {
 
         view.setLayoutManager(layoutManager);
         view.setItemAnimator(new DefaultItemAnimator());
-
         ItemTouchHelper.Callback callback =
                 new WatchlistItemMoveCallback(adapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);

@@ -134,8 +134,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getReviewData(String url) {
-        System.out.println("#####################################3");
-        System.out.println(url);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -338,8 +336,6 @@ public class DetailActivity extends AppCompatActivity {
                 String order = sharedPref.getString("order", "");
                 order += "|" + key;
 
-                System.out.println("################################");
-                System.out.println(title);
                 editor.putString("order", order);
                 editor.putString(key, imgUrl);
                 editor.apply();

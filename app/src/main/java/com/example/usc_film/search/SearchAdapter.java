@@ -58,7 +58,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
                 .into(holder.imageView);
 
         holder.titleView.setText(searchData.getTitle());
-        String tmp = searchData.getType() + " (" +  searchData.getYear() + ")";
+        String tmp = searchData.getType();
+        if (!searchData.getYear().isEmpty())
+            tmp += " (" +  searchData.getYear() + ")";
         holder.mediaTypeView.setText(tmp);
         holder.ratingView.append(searchData.getRating());
 

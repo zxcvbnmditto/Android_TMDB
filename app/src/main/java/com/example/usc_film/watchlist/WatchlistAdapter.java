@@ -128,5 +128,6 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+//        notifyDataSetChanged();
     }
 }

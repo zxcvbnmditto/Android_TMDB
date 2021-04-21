@@ -60,20 +60,25 @@ public class HomeFragment extends Fragment {
     private ScrollView mvScrollView;
     private ScrollView tvScrollView;
     private Boolean[] loaded = new Boolean[6];
+    private Button mv_btn;
+    private Button tv_btn;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
         progressBar = view.findViewById(R.id.home_progressBar);
         loadingView = view.findViewById(R.id.home_loading_view);
         mvScrollView = view.findViewById(R.id.home_mv_scrollview);
         tvScrollView = view.findViewById(R.id.home_tv_scrollview);
+        mv_btn = view.findViewById(R.id.movies_btn);
+        tv_btn = view.findViewById(R.id.tv_btn);
         Arrays.fill(loaded, false);
+
+        // Load Data from backend
         loadData();
 
         // Button Listeners
-        final Button mv_btn = view.findViewById(R.id.movies_btn);
         mv_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -81,10 +86,10 @@ public class HomeFragment extends Fragment {
                     isMovie = !isMovie;
                     setMainContentVisibility();
                 }
+                setTabBtnColor();
             }
         });
 
-        final Button tv_btn = view.findViewById(R.id.tv_btn);
         tv_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -92,9 +97,11 @@ public class HomeFragment extends Fragment {
                     isMovie = !isMovie;
                     setMainContentVisibility();
                 }
+                setTabBtnColor();
             }
         });
 
+        // Footer Listener
         view.findViewById(R.id.footer_tmdb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,8 +111,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mv_btn.setTextColor(ContextCompat.getColorStateList(getActivity().getApplicationContext(), (isMovie) ? R.color.colorSecondary : R.color.colorPrimary));
-        tv_btn.setTextColor(ContextCompat.getColorStateList(getActivity().getApplicationContext(), (isMovie) ? R.color.colorPrimary : R.color.colorSecondary));
+        setTabBtnColor();
         return view;
     }
 
@@ -235,5 +241,10 @@ public class HomeFragment extends Fragment {
             mvScrollView.setVisibility(View.INVISIBLE);
             tvScrollView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setTabBtnColor() {
+        mv_btn.setTextColor(ContextCompat.getColorStateList(getActivity().getApplicationContext(), (isMovie) ? R.color.colorSecondary : R.color.colorPrimary));
+        tv_btn.setTextColor(ContextCompat.getColorStateList(getActivity().getApplicationContext(), (isMovie) ? R.color.colorPrimary : R.color.colorSecondary));
     }
 }

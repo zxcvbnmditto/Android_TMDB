@@ -1,9 +1,12 @@
 package com.example.usc_film.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 
@@ -41,11 +44,7 @@ public class SearchFragment extends Fragment {
         searchView.setIconified(false);
         searchContentView = view.findViewById(R.id.search_content);
         searchNoReseultFoundView = view.findViewById(R.id.search_no_result_found);
-//        searchView.requestFocusFromTouch();
-//        searchView.clearFocus();
 
-//        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        mgr.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -61,15 +60,13 @@ public class SearchFragment extends Fragment {
                     String url = "http://10.0.2.2:8080/Search?query=" + newText;
                     search(url);
                 }
-                else {
-                    searchContentView.setVisibility(View.INVISIBLE);
-                }
                 return false;
             }
         });
 
         return view;
     }
+
 
     private void search(String url) {
         // Request a string response from the provided URL.

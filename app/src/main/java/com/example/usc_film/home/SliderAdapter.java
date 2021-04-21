@@ -121,7 +121,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                                     }
                                     editor.remove(key);
                                     title_editor.remove(key);
-                                    toastMsg += "was removed from Watchlist";
+                                    toastMsg += " was removed from Watchlist";
                                 }
                                 else {
                                     if (prefs.contains("order")) {
@@ -135,7 +135,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                                     }
                                     editor.putString(key, media_data.getImgUrl());
                                     title_editor.putString(key, media_data.getTitle());
-                                    toastMsg += "was added to Watchlist";
+                                    toastMsg += " was added to Watchlist";
                                 }
                                 editor.apply();
                                 title_editor.apply();
