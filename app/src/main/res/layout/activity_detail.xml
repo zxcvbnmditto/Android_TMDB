@@ -55,9 +55,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorSecondary"
                 android:textSize="30dp"
-                android:textFontWeight="700"
+                android:textFontWeight="900"
                 android:background="@color/colorPrimary"/>
 
             <TextView
@@ -66,9 +67,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:text="Overview"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <com.borjabravo.readmoretextview.ReadMoreTextView
                 android:id="@+id/detail_overview"
@@ -90,9 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:text="Genres"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <TextView
                 android:id="@+id/detail_genres"
@@ -100,8 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:textColor="@color/colorSecondary"
-                android:textSize="15dp"
-                android:textFontWeight="700" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/detail_year_title"
@@ -109,9 +111,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:text="Year"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <TextView
                 android:id="@+id/detail_year"
@@ -167,9 +170,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:text="Cast"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_cast"
@@ -183,9 +187,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:text="Reviews"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_review"
@@ -200,9 +205,10 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Recommend Picks"
+                android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:textFontWeight="700" />
+                android:textFontWeight="900" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recommend"

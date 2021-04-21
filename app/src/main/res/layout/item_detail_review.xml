@@ -22,6 +22,8 @@
             android:id="@+id/recycler_detail_review_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textFontWeight="900"
             android:textSize="15dp"
             android:textColor="@color/colorPrimary" />
 

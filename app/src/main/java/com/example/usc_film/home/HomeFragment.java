@@ -60,8 +60,8 @@ public class HomeFragment extends Fragment {
     private ScrollView mvScrollView;
     private ScrollView tvScrollView;
     private Boolean[] loaded = new Boolean[6];
-    private Button mv_btn;
-    private Button tv_btn;
+    private TextView mv_btn;
+    private TextView tv_btn;
 
     @Nullable
     @Override
