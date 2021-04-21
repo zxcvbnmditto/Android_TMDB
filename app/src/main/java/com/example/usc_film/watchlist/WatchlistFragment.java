@@ -3,6 +3,7 @@ package com.example.usc_film.watchlist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,20 @@ public class WatchlistFragment extends Fragment {
         // Read Shared Preference
         SharedPreferences sharedPref = getActivity().getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        Map<String, ?> allEntries = sharedPref.getAll();
-        for (Map.Entry<String, ?> entry: allEntries.entrySet()) {
-            String[] parts = entry.getKey().split("-");
-            String id = parts[0];
-            String media_type = parts[1];
-            String imgUrl = entry.getValue().toString();
-            watchlistDataArrayList.add(new WatchlistData(imgUrl, media_type, id));
+
+        if (sharedPref.contains("order")) {
+            String order_raw = sharedPref.getString("order", "");
+            System.out.println(order_raw);
+            String[] order = order_raw.split("\\|");
+            for (int i = 1; i < order.length; i++) {
+//                System.out.println("###############################");
+//                System.out.println(order[i]);
+                String[] parts = order[i].split("-");
+                String id = parts[0];
+                String media_type = parts[1];
+                String imgUrl = sharedPref.getString(order[i], "");
+                watchlistDataArrayList.add(new WatchlistData(imgUrl, media_type, id));
+            }
         }
     }
 

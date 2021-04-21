@@ -112,12 +112,26 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                             case R.id.add_remove_to_watchlist_btn:
                                 String toastMsg = media_data.getTitle();
                                 if (prefs.contains(key)) {
+                                    if (prefs.contains("order")) {
+                                        String order = prefs.getString("order", "");
+                                        String new_order = order.replaceFirst("\\|" + key, "");
+                                        editor.putString("order", new_order);
+                                    }
                                     editor.remove(key);
                                     toastMsg += "was removed from Watchlist";
                                 }
                                 else {
-                                    toastMsg += "was added to Watchlist";
+                                    if (prefs.contains("order")) {
+                                        String order = prefs.getString("order", "");
+                                        String new_order = order.replaceFirst("\\|" + key, "");
+                                        new_order += "|" + key;
+                                        editor.putString("order", new_order);
+                                    } else {
+                                        String order = "|" + key;
+                                        editor.putString("order", order);
+                                    }
                                     editor.putString(key, media_data.getImgUrl());
+                                    toastMsg += "was added to Watchlist";
                                 }
                                 editor.apply();
                                 Toast.makeText(view.getContext(), toastMsg, Toast.LENGTH_SHORT).show();
