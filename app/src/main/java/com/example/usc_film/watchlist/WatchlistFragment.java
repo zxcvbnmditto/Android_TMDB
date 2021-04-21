@@ -55,7 +55,7 @@ public class WatchlistFragment extends Fragment {
 
         if (sharedPref.contains("order")) {
             String order_raw = sharedPref.getString("order", "");
-            System.out.println(order_raw);
+//            System.out.println(order_raw);
             String[] order = order_raw.split("\\|");
             for (int i = 1; i < order.length; i++) {
 //                System.out.println("###############################");
