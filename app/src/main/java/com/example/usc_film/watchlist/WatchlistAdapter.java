@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +21,9 @@ import com.example.usc_film.DetailActivity;
 import com.example.usc_film.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyViewHolder> {
+public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyViewHolder> implements WatchlistItemMoveCallback.ItemTouchHelperContract {
     private ArrayList<WatchlistData> data;
 
     public WatchlistAdapter(ArrayList<WatchlistData> data) {
@@ -29,12 +32,14 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         View itemView;
+        CardView cardView;
         ImageView imageView;
         TextView textView;
         TextView btn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.recycler_watchlist_card);
             imageView = itemView.findViewById(R.id.recycler_watchlist_image);
             textView = itemView.findViewById(R.id.recycler_watchlist_type);
             btn = itemView.findViewById(R.id.recycler_watchlist_btn);
@@ -109,5 +114,19 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    @Override
+    public void onItemMoved(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(data, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(data, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
     }
 }

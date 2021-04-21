@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -76,6 +77,11 @@ public class WatchlistFragment extends Fragment {
 
         view.setLayoutManager(layoutManager);
         view.setItemAnimator(new DefaultItemAnimator());
+
+        ItemTouchHelper.Callback callback =
+                new WatchlistItemMoveCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(view);
         view.setAdapter(adapter);
     }
 }

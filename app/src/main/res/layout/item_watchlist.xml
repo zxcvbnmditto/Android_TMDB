@@ -11,7 +11,7 @@
         android:id="@+id/recycler_watchlist_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="@drawable/gradient"/>
+        android:foreground="@drawable/gradient" />
 
     <RelativeLayout
         android:layout_width="match_parent"
