@@ -3,7 +3,6 @@ package com.example.usc_film.watchlist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +19,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import static android.widget.GridView.STRETCH_SPACING_UNIFORM;
 
 public class WatchlistFragment extends Fragment {
 

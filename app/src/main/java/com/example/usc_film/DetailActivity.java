@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,7 +65,6 @@ public class DetailActivity extends AppCompatActivity {
     private String type;
     private DetailData detailData;
     private Boolean[] loaded = new Boolean[5];
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,7 +214,8 @@ public class DetailActivity extends AppCompatActivity {
                             detailData.setTitle(response.getString("title"));
                             detailData.setGenres(response.getString("genres"));
                             detailData.setOverview(response.getString("overview"));
-                            detailData.setBackdrop_path(response.getString("path"));
+                            detailData.setBackdrop_path(response.getString("backdrop_path"));
+                            detailData.setImgUrl(response.getString("path"));
                             detailData.setYear(response.getString("date"));
                             setDetailView();
                             setVisibility(Type.DETAIL);
@@ -294,7 +296,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setDetailView() {
-        TextView title =  findViewById(R.id.detail_title);
+        TextView title = findViewById(R.id.detail_title);
         title.setText(detailData.getTitle());
         TextView overview = findViewById(R.id.detail_overview);
         overview.setText(detailData.getOverview());
@@ -308,6 +310,49 @@ public class DetailActivity extends AppCompatActivity {
                 .load(detailData.getBackdrop_path())
                 .centerCrop()
                 .into(imageView);
+
+        final TextView addWatchlist = findViewById(R.id.detail_add_watchlist);
+        final TextView removeWatchlist = findViewById(R.id.detail_remove_watchlist);
+
+        final SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        final String key = id + "-" + type;
+        if (sharedPref.contains(key)) {
+            addWatchlist.setVisibility(View.GONE);
+            removeWatchlist.setVisibility(View.VISIBLE);
+        } else {
+            addWatchlist.setVisibility(View.VISIBLE);
+            removeWatchlist.setVisibility(View.GONE);
+        }
+
+        addWatchlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String order = sharedPref.getString("order", "");
+                order += "|" + key;
+                editor.putString("order", order);
+                editor.putString(key, detailData.getImgUrl());
+                editor.apply();
+
+                addWatchlist.setVisibility(View.GONE);
+                removeWatchlist.setVisibility(View.VISIBLE);
+            }
+        });
+
+        removeWatchlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String order = sharedPref.getString("order", "");
+                String new_order = order.replaceFirst("\\|" + key, "");
+                editor.putString("order", new_order);
+                editor.remove(key);
+                editor.apply();
+
+                addWatchlist.setVisibility(View.VISIBLE);
+                removeWatchlist.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setYTPlayer() {

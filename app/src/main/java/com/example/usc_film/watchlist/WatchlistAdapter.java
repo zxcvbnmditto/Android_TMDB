@@ -73,7 +73,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
         holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Activity myActivity = (Activity) view.getContext();
+                final Activity myActivity = (Activity) view.getContext();
                 SharedPreferences prefs = myActivity.getSharedPreferences(view.getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 String key = d.getId() + "-" + d.getType();
@@ -85,12 +85,14 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
                 editor.remove(key);
                 editor.apply();
 
-                System.out.println("####################");
-                System.out.println(position);
                 data.remove(position);
                 notifyItemChanged(position);
                 notifyItemRangeRemoved(position, 1);
                 notifyDataSetChanged();  // Not sure if it is the best
+                if (getItemCount() == 0) {
+                    TextView emptyText = myActivity.findViewById(R.id.watchlist_empty);
+                    emptyText.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

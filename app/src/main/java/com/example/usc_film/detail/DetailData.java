@@ -9,6 +9,7 @@ public class DetailData {
     private String type;
     private String video_key;
     private String backdrop_path;
+    private String imgUrl;
     private String title;
     private String overview;
     private String genres;
@@ -111,5 +112,13 @@ public class DetailData {
 
     public void setRecommends(ArrayList<MediaData> recommends) {
         this.recommends = recommends;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
