@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,6 +85,14 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
                 }
                 editor.remove(key);
                 editor.apply();
+
+                SharedPreferences title_prefs = myActivity.getSharedPreferences(view.getContext().getString(R.string.preference_title_file_key), Context.MODE_PRIVATE);
+                SharedPreferences.Editor title_editor = title_prefs.edit();
+                title_editor.remove(key);
+                title_editor.apply();
+
+                String toastMsg = d.getTitle() + " was removed from watchlist";
+                Toast.makeText(view.getContext(), toastMsg, Toast.LENGTH_SHORT).show();
 
                 data.remove(position);
                 notifyItemChanged(position);

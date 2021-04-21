@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class WatchlistFragment extends Fragment {
 
@@ -48,6 +49,8 @@ public class WatchlistFragment extends Fragment {
         // Read Shared Preference
         SharedPreferences sharedPref = getActivity().getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences titlePref = getActivity().getSharedPreferences(
+                getString(R.string.preference_title_file_key), Context.MODE_PRIVATE);
 
         if (sharedPref.contains("order")) {
             String order_raw = sharedPref.getString("order", "");
@@ -60,7 +63,8 @@ public class WatchlistFragment extends Fragment {
                 String id = parts[0];
                 String media_type = parts[1];
                 String imgUrl = sharedPref.getString(order[i], "");
-                watchlistDataArrayList.add(new WatchlistData(imgUrl, media_type, id));
+                String title = titlePref.getString(order[i], "");
+                watchlistDataArrayList.add(new WatchlistData(imgUrl, media_type, id, title));
             }
         }
     }

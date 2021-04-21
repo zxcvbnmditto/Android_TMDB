@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -296,8 +297,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setDetailView() {
-        TextView title = findViewById(R.id.detail_title);
-        title.setText(detailData.getTitle());
+        TextView titleView = findViewById(R.id.detail_title);
+        titleView.setText(detailData.getTitle());
         TextView overview = findViewById(R.id.detail_overview);
         overview.setText(detailData.getOverview());
         TextView genres = findViewById(R.id.detail_genres);
@@ -317,6 +318,9 @@ public class DetailActivity extends AppCompatActivity {
         final SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
+        final SharedPreferences titleSharedPref = getSharedPreferences(
+                getString(R.string.preference_title_file_key), Context.MODE_PRIVATE);
+        final SharedPreferences.Editor titleEditor = titleSharedPref.edit();
         final String key = id + "-" + type;
         if (sharedPref.contains(key)) {
             addWatchlist.setVisibility(View.GONE);
@@ -326,14 +330,25 @@ public class DetailActivity extends AppCompatActivity {
             removeWatchlist.setVisibility(View.GONE);
         }
 
+        final String imgUrl = detailData.getImgUrl();
+        final String title = detailData.getTitle();
         addWatchlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String order = sharedPref.getString("order", "");
                 order += "|" + key;
+
+                System.out.println("################################");
+                System.out.println(title);
                 editor.putString("order", order);
-                editor.putString(key, detailData.getImgUrl());
+                editor.putString(key, imgUrl);
                 editor.apply();
+
+                titleEditor.putString(key, title);
+                titleEditor.apply();
+
+                String toastMsg = title + " was added to watchlist";
+                Toast.makeText(view.getContext(), toastMsg, Toast.LENGTH_SHORT).show();
 
                 addWatchlist.setVisibility(View.GONE);
                 removeWatchlist.setVisibility(View.VISIBLE);
@@ -348,6 +363,12 @@ public class DetailActivity extends AppCompatActivity {
                 editor.putString("order", new_order);
                 editor.remove(key);
                 editor.apply();
+
+                titleEditor.remove(key);
+                titleEditor.apply();
+
+                String toastMsg = title + " was removed from watchlist";
+                Toast.makeText(view.getContext(), toastMsg, Toast.LENGTH_SHORT).show();
 
                 addWatchlist.setVisibility(View.VISIBLE);
                 removeWatchlist.setVisibility(View.GONE);

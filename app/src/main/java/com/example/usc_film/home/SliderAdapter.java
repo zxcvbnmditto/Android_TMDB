@@ -79,6 +79,8 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                 Activity myActivity = (Activity) view.getContext();
                 final SharedPreferences prefs = myActivity.getSharedPreferences(view.getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 final SharedPreferences.Editor editor = prefs.edit();
+                final SharedPreferences title_prefs = myActivity.getSharedPreferences(view.getContext().getString(R.string.preference_title_file_key), Context.MODE_PRIVATE);
+                final SharedPreferences.Editor title_editor = title_prefs.edit();
                 final String key = media_data.getId() + "-" + media_data.getType();
                 if (prefs.contains(key)) {
                     popupMenu.getMenu().getItem(3).setTitle("Remove from Watchlist");
@@ -118,6 +120,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                                         editor.putString("order", new_order);
                                     }
                                     editor.remove(key);
+                                    title_editor.remove(key);
                                     toastMsg += "was removed from Watchlist";
                                 }
                                 else {
@@ -131,9 +134,11 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
                                         editor.putString("order", order);
                                     }
                                     editor.putString(key, media_data.getImgUrl());
+                                    title_editor.putString(key, media_data.getTitle());
                                     toastMsg += "was added to Watchlist";
                                 }
                                 editor.apply();
+                                title_editor.apply();
                                 Toast.makeText(view.getContext(), toastMsg, Toast.LENGTH_SHORT).show();
                                 break;
                             default:
