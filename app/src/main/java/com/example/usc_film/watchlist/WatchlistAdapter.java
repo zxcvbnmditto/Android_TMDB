@@ -111,23 +111,50 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyVi
         });
     }
 
+
     @Override
     public int getItemCount() {
         return data.size();
     }
 
     @Override
-    public void onItemMoved(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(data, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(data, i, i - 1);
-            }
-        }
+    public void onItemMoved(RecyclerView.ViewHolder viewHolder, int fromPosition, int toPosition) {
+//        if (fromPosition < toPosition) {
+//            for (int i = fromPosition; i < toPosition; i++) {
+//                Collections.swap(data, i, i + 1);
+//            }
+//        } else {
+//            for (int i = fromPosition; i > toPosition; i--) {
+//                Collections.swap(data, i, i - 1);
+//            }
+//        }
+        Collections.swap(data, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
+
+        Activity myActivity = (Activity) viewHolder.itemView.getContext();
+        SharedPreferences prefs = myActivity.getSharedPreferences(viewHolder.itemView.getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        String order = prefs.getString("order", "");
+        String new_order = order;
+
+        WatchlistData d1 = data.get(fromPosition);
+        WatchlistData d2 = data.get(toPosition);
+        String k1 = d1.getId() + "-" + d1.getType();
+        String k2 = d2.getId() + "-" + d2.getType();
+//        System.out.println("##########################");
+//        System.out.println(order);
+//        System.out.println("From :" + k1 + " " + d1.getTitle());
+//        System.out.println("To: " + k2 + " " + d2.getTitle());
+        if (fromPosition > toPosition) {
+            new_order = new_order.replaceFirst(k2, k1);
+            new_order = new_order.replaceFirst(k1, k2);
+        } else if (fromPosition < toPosition) {
+            new_order = new_order.replaceFirst(k1, k2);
+            new_order = new_order.replaceFirst(k2, k1);
+        }
+//        System.out.println(new_order);
+        editor.putString("order", new_order);
+        editor.apply();
     }
 }

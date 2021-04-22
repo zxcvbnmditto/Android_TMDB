@@ -31,7 +31,7 @@ public class WatchlistItemMoveCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        mAdapter.onItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        mAdapter.onItemMoved(viewHolder, viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 
@@ -39,6 +39,6 @@ public class WatchlistItemMoveCallback extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {}
 
     public interface ItemTouchHelperContract {
-        void onItemMoved(int fromPosition, int toPosition);
+        void onItemMoved(RecyclerView.ViewHolder viewHolder, int fromPosition, int toPosition);
     }
 }
